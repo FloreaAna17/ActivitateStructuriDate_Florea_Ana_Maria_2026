@@ -56,5 +56,6 @@ int main() {
 	printf("%s", compara_Studenti(s, s2));
 	dezalocare(&s);
 
+
 	return 0;
 }
