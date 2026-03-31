@@ -108,22 +108,66 @@ void dezalocareStivaDeMasini(/*stiva*/) {
 int size(/*stiva*/) {
 	//returneaza numarul de elemente din stiva
 }
+typedef struct NodDublu NodDublu;
+struct NodDublu  {
+	Masina info;
+	NodDublu* next;
+	NodDublu* prev;
+};
+typedef struct ListaDubluInlantuita ListaD;
+struct ListaDubluInlantuita {
+	NodDublu* first;
+	NodDublu* last;
+};
 
 //QUEUE
 //Alegeti prin ce veti reprezenta coada si creati structura necesara acestei cozi
 //putem reprezenta o coada prin LSI, LDI sau vector
-void enqueue(/*coada*/ Masina masina) {
-	//adauga o masina in coada
+
+void enqueue(ListaD* coada, Masina masina) {
+	NodDublu* newNod = malloc(sizeof(NodDublu));
+	newNod->info = masina;
+	newNod->next = NULL;
+	newNod->prev = coada->last;
+	if (coada->last) {
+		coada->last->next = newNod;
+	}
+	else {
+		coada->first = newNod;
+	}
+	coada->last = newNod;
+
+
+
 }
 
-Masina dequeue(/*coada*/) {
-	//extrage o masina din coada
+Masina dequeue(ListaD* coada) {
+	Masina rezultat;
+	rezultat.id = -1;
+	if (coada->first) {
+		rezultat = coada->first->info;//am facut shallow copy si nu trb sa stergem model si numeSofer
+		NodDublu* temp = coada->first;
+		coada->first = temp->next;
+		free(temp);
+	}
+	return rezultat;
 }
 
-void* citireCoadaDeMasiniDinFisier(const char* numeFisier) {
+ListaD citireCoadaDeMasiniDinFisier(const char* numeFisier) {
 	//functia primeste numele fisierului, il deschide si citeste toate masinile din fisier
 	//prin apelul repetat al functiei citireMasinaDinFisier()
 	//ATENTIE - la final inchidem fisierul/stream-ul
+	ListaD coada;
+	coada.first = coada.last = NULL;
+	FILE* f = fopen(numeFisier, "r");
+	if (f) {
+		while (!feof(f)) {
+			enqueue(&coada, citireMasinaDinFisier(f));
+		}
+		fclose(f);
+		
+	}
+	return coada;
 }
 
 void dezalocareCoadaDeMasini(/*coada*/) {
@@ -161,5 +205,9 @@ int main() {
 	afisareMasina(popStack(&stiva));
 
 	afisareMasina(getMasinaByID(&stiva,4));
+
+	printf("coada\n");
+	ListaD coada = citireCoadaDeMasiniDinFisier("masini.txt");
+	afisareMasina(dequeue(&coada));
 	return 0;
 }
