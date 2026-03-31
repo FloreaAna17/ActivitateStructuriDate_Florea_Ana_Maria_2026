@@ -132,7 +132,26 @@ void dezalocareCoadaDeMasini(/*coada*/) {
 
 
 //metode de procesare
-Masina getMasinaByID(/*stiva sau coada de masini*/int id);
+Masina getMasinaByID(Nod** stiva,int id) {
+	Masina rezultat;
+	if ((*stiva) == NULL) {
+		rezultat.id = -1;
+		return rezultat;
+	}
+	Nod* stivaNoua = NULL;
+	while ((*stiva)) {
+		Masina masinaNoua = popStack(stiva);
+		if (masinaNoua.id == id) {
+			rezultat = masinaNoua;
+			break;
+		}
+		pushStack(&stivaNoua, masinaNoua);
+	}
+	while (stivaNoua) {
+		pushStack(stiva, popStack(&stivaNoua));
+	 }
+	return rezultat;
+};
 
 float calculeazaPretTotal(/*stiva sau coada de masini*/);
 
@@ -141,5 +160,6 @@ int main() {
 	afisareMasina(popStack(&stiva));
 	afisareMasina(popStack(&stiva));
 
+	afisareMasina(getMasinaByID(&stiva,4));
 	return 0;
 }
