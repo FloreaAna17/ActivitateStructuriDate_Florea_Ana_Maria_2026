@@ -31,6 +31,13 @@ void afisare(struct Angajat a) {
 }
 
 //functie de transferare in alt departament
+void transferaDepartament(struct Angajat* a,const char* departamentNou) {
+	if (a->departament != NULL) {
+		free(a->departament);
+	}
+	a->departament= (char*)malloc(sizeof(char) * (strlen(departamentNou) + 1));
+	strcpy_s(a->departament, strlen(departamentNou) + 1, departamentNou);
+}
 
 //dezalocare
 void dezalocare(struct Angajat* a) {
@@ -48,6 +55,9 @@ void dezalocare(struct Angajat* a) {
 int main() {
 	struct Angajat a;
 	a = initializare(1, "Ana", "IT", 3200.5);
+	afisare(a);
+
+	transferaDepartament(&a, "MKT");
 	afisare(a);
 
 	dezalocare(&a);
