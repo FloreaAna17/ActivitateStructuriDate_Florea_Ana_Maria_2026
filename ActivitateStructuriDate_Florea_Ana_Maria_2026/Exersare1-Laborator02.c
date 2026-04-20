@@ -1,5 +1,7 @@
 #include<stdio.h>
 #include<malloc.h>
+#include<stdlib.h>
+#include<string.h>
 
 struct Carte {
 	int id;
@@ -34,20 +36,31 @@ void afisareVector(struct Carte* c, int nrCarti) {
 void copiazaCartiBune(struct Carte* carti, int nrCarti,float ratingMinim,struct Carte** cartiNoi, int* nrCartiCopiate) {
 	*nrCartiCopiate = 0;
 	for (int i = 0; i < nrCarti; i++) {
-		if (carti[i].rating > 5) {
+		if (carti[i].rating > ratingMinim) {
 			(*nrCartiCopiate)++;
 		}
 	}
 	*cartiNoi = (struct Carte*)malloc(sizeof(struct Carte) * (*nrCartiCopiate));
 	int n = 0;
 	for (int i = 0; i < nrCarti; i++) {
-		if (carti[i].rating > 5) {
+		if (carti[i].rating > ratingMinim) {
 			(*cartiNoi)[n] = carti[i];
 			(*cartiNoi)[n].titlu = (char*)malloc(sizeof(char) * (strlen(carti[i].titlu) + 1));
 			strcpy_s((*cartiNoi)[n].titlu, strlen(carti[i].titlu) + 1, carti[i].titlu);
 			n++;
 		}
 	}
+}
+
+void dezalocare(struct Carte** carti, int* nrCarti) {
+	for (int i = 0; i < (*nrCarti); i++) {
+		if ((*carti)[i].titlu != NULL) {
+			free((*carti)[i].titlu);
+		}
+	}
+	free(*carti);
+	*carti = NULL;
+	*nrCarti = 0;
 }
 
 int main() {
@@ -69,6 +82,10 @@ int main() {
 	copiazaCartiBune(carti, 3, 5, &cartiNoi, &nrCartiCopiate);
 	afisareVector(cartiNoi, nrCartiCopiate);
 
-
+	printf("Dupa dezalocare: \n");
+	dezalocare(&cartiNoi, &nrCartiCopiate);
+	afisareVector(cartiNoi, nrCartiCopiate);
+	dezalocare(&carti, &nrCarti);
+	afisareVector(carti, nrCarti);
 	return 0;
 }
