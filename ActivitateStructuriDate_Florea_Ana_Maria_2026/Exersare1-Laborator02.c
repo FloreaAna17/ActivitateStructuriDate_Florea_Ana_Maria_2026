@@ -51,7 +51,7 @@ void copiazaCartiBune(struct Carte* carti, int nrCarti,float ratingMinim,struct 
 		}
 	}
 }
-
+//alte functii
 void dezalocare(struct Carte** carti, int* nrCarti) {
 	for (int i = 0; i < (*nrCarti); i++) {
 		if ((*carti)[i].titlu != NULL) {
