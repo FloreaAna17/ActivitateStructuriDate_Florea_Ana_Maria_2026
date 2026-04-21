@@ -15,8 +15,47 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Seminar03.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar04.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Exersare1-LSI.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar05.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar06.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar07.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar02.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Exersare1-Laborator01.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Exersare2-Laborator01.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Exersare3-Laborator01.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Exersare1-Laborator02.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Seminar08.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Seminar01.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="masini.txt" />
   </ItemGroup>
 </Project>

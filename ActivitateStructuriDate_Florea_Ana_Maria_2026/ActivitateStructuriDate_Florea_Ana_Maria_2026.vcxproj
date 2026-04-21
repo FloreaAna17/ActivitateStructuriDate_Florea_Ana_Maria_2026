@@ -123,7 +123,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Exersare1-Laborator01.c" />
+    <ClCompile Include="Exersare1-Laborator02.c" />
+    <ClCompile Include="Exersare1-LSI.c" />
+    <ClCompile Include="Exersare2-Laborator01.c" />
+    <ClCompile Include="Exersare3-Laborator01.c" />
     <ClCompile Include="Seminar01.c" />
+    <ClCompile Include="Seminar02.c" />
+    <ClCompile Include="Seminar03.c" />
+    <ClCompile Include="Seminar04.c" />
+    <ClCompile Include="Seminar05.c" />
+    <ClCompile Include="Seminar06.c" />
+    <ClCompile Include="Seminar07.c" />
+    <ClCompile Include="Seminar08.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="masini.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
