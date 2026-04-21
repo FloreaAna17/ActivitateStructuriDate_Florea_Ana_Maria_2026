@@ -104,4 +104,5 @@ int main() {
 	dezalocare(&carti, &nrCarti);
 	afisareVector(carti, nrCarti);
 	return 0;
+
 }
