@@ -51,7 +51,19 @@ void copiazaCartiBune(struct Carte* carti, int nrCarti,float ratingMinim,struct 
 		}
 	}
 }
-//alte functii
+
+void sortareDupaRating(struct Carte* carti, int nrCarti) {
+	for (int i = 0; i < nrCarti; i++) {
+		for (int j = i + 1; j < nrCarti; j++) {
+			if (carti[i].rating < carti[j].rating) {
+				struct Carte aux = carti[i];
+				carti[i] = carti[j];
+				carti[j] = aux;
+			}
+		}
+	}
+}
+
 void dezalocare(struct Carte** carti, int* nrCarti) {
 	for (int i = 0; i < (*nrCarti); i++) {
 		if ((*carti)[i].titlu != NULL) {
@@ -82,7 +94,11 @@ int main() {
 	copiazaCartiBune(carti, 3, 5, &cartiNoi, &nrCartiCopiate);
 	afisareVector(cartiNoi, nrCartiCopiate);
 
-	printf("Dupa dezalocare: \n");
+	printf("\nCartile sortate dupa rating:\n");
+	sortareDupaRating(carti, nrCarti);
+	afisareVector(carti, nrCarti);
+
+	printf("\nDupa dezalocare: \n");
 	dezalocare(&cartiNoi, &nrCartiCopiate);
 	afisareVector(cartiNoi, nrCartiCopiate);
 	dezalocare(&carti, &nrCarti);
