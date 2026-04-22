@@ -1,0 +1,5 @@
+101,Lenovo,Intel Core i5,2500.50
+102,Asus,AMD Ryzen 7,3200.00
+103,HP,Intel Core i3,1800.75
+104,Apple,Apple M2,5400.00
+105,Dell,Intel Core i7,4100.25
