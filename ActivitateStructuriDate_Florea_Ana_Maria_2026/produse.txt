@@ -1,0 +1,4 @@
+10,Paine,Alimente,2.50
+11,Lapte,Alimente,6.00
+12,Detergent,Curatenie,25.50
+13,Apa plata,Alimente,3.20
