@@ -1,0 +1,3 @@
+101,Popescu Ion,IT,4500.50,M
+102,Ionescu Maria,HR,3800.75,F
+103,Vasilescu Andrei,Vanzari,3200.00,M
