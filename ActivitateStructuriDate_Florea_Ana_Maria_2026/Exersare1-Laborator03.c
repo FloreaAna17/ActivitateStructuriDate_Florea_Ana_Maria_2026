@@ -76,9 +76,30 @@ Angajat* citireVectorDinFisier(const char* numeFisier,int* nrAngajati) {
 	return vector;
 }
 
+void dezalocareVectorAngajati(Angajat** angajati, int* nrAngajati) {
+	if (*angajati != NULL) {
+		for (int i = 0; i < (*nrAngajati); i++) {
+			if ((*angajati)[i].nume != NULL) {
+				free((*angajati)[i].nume);
+			}
+			if ((*angajati)[i].departament != NULL) {
+				free((*angajati)[i].departament);
+			}
+			
+		}
+		free(*angajati);
+	}
+	*nrAngajati = 0;
+	*angajati = NULL;
+}
+
 int main() {
 	int nrAngajati = 3;
 	Angajat* angajati = citireVectorDinFisier("angajati.txt", &nrAngajati);
+	afisareVectorAngajat(angajati, nrAngajati);
+
+	dezalocareVectorAngajati(&angajati, &nrAngajati);
+	printf("\nDupa dezalocare\n");
 	afisareVectorAngajat(angajati, nrAngajati);
 	return 0;
 }
