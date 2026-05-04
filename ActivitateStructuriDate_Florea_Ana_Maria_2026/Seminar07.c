@@ -137,15 +137,31 @@ void afisareTabelaDeMasini(HashTable ht) {
 		if (ht.vector[i] != NULL) {
 			printf("Cluster: %d\n", i + 1);
 			afisareListaMasini(ht.vector[i]);
-			printf("===============\n");
 		}
 
 	}
 	
 }
 
-void dezalocareTabelaDeMasini(HashTable *ht) {
-	//sunt dezalocate toate masinile din tabela de dispersie
+void dezalocareTabelaDeMasini(HashTable* ht) {
+	
+	for (int i = 0; i < ht->dim; i++) {
+		if (ht->vector[i] != NULL) {
+			Nod* p = ht->vector[i];
+			while (p != NULL) {
+				Nod* aux = p;
+				p = p->next;
+
+				if (aux->info.model) free(aux->info.model);
+				if (aux->info.numeSofer) free(aux->info.numeSofer);
+				free(aux);
+			}
+			ht->vector[i] = NULL;
+		}
+	}
+	free(ht->vector);
+	ht->vector = NULL; // Prevenim folosirea accidentala
+	ht->dim = 0;
 }
 
 float* calculeazaPreturiMediiPerClustere(HashTable ht, int* nrClustere) {
@@ -155,23 +171,22 @@ float* calculeazaPreturiMediiPerClustere(HashTable ht, int* nrClustere) {
 			(*nrClustere)++;
 		}
 	}
-		float* vectorPreturi = malloc(sizeof(float)*(*nrClustere));
-		int k = 0;
-		for (int i = 0; i < ht.dim; i++) {
-			if (ht.vector[i] != NULL) {
-				float suma = 0;
-				int nrMasini = 0;
-				Nod* aux = ht.vector[i];
-				while (aux) {
-					suma = aux->info.pret;
-					nrMasini++;
-					aux = aux->next;
-				}
-				vectorPreturi[k++] = suma / nrMasini;
+	float* vectorPreturi = malloc(sizeof(float) * (*nrClustere));
+	int k = 0;
+	for (int i = 0; i < ht.dim; i++) {
+		if (ht.vector[i] != NULL) {
+			float suma = 0;
+			int nrMasini = 0;
+			Nod* aux = ht.vector[i];
+			while (aux) {
+				suma += aux->info.pret;
+				nrMasini++;
+				aux = aux->next;
 			}
+			vectorPreturi[k++] = suma / nrMasini;
 		}
-	
-		return vectorPreturi;;
+	}
+	return vectorPreturi;
 }
 
 Masina getMasinaDupaCheie(HashTable ht ,int id) {
@@ -197,17 +212,26 @@ Masina getMasinaDupaCheie(HashTable ht ,int id) {
 }
 
 int main() {
-	HashTable tabela=citireMasiniDinFisier("masini.txt");
-	afisareTabelaDeMasini(tabela);
+	
+		HashTable tabela = citireMasiniDinFisier("masini.txt");
+		afisareTabelaDeMasini(tabela);
 
-	Masina m = getMasinaDupaCheie(tabela, 5);
-	afisareMasina(m);
+		Masina m = getMasinaDupaCheie(tabela, 5);
+		afisareMasina(m);
 
-	int nrClustere;
-	float* vectorPreturi = calculeazaPreturiMediiPerClustere(tabela, &nrClustere);
-	for (int i = 0; i < nrClustere; i++) {
-		printf("Pentru clusterul cu indexul %d pretul mediu este: %f\n", i, vectorPreturi[i]);
+		if (m.id != -1) {
+			free(m.model);
+			free(m.numeSofer);
+		}
+
+		int nrClustere;
+		float* vectorPreturi = calculeazaPreturiMediiPerClustere(tabela, &nrClustere);
+		for (int i = 0; i < nrClustere; i++) {
+			printf("Pentru clusterul cu indexul %d pretul mediu este: %f\n", i, vectorPreturi[i]);
+		}
+		free(vectorPreturi);
+		dezalocareTabelaDeMasini(&tabela);
+
+		return 0;
 	}
-
-	return 0;
-}
+	
