@@ -45,10 +45,40 @@ Laptop citireLaptop(FILE f) {
 }
 
 void inserareInArbore(NodArbore** radacina, Laptop l) {
+	if (*radacina) {
+		if (l.id<(*radacina)->info.id) {
+			inserareInArbore(&(*radacina)->stanga, l);
+		}
+		else {
+			if (l.id > (*radacina)->info.id) {
+				inserareInArbore(&(*radacina)->dreapta, l);
+			}
+		}
+	}
+	else {
+		NodArbore* nou = (NodArbore*)malloc(sizeof(NodArbore));
+		nou->dreapta = NULL;
+		nou->stanga = NULL;
+		nou->info = l;
+		*radacina = nou;
+	}
+}
 
+NodArbore* citireArboreDinFisier(const char* numeFisier) {
+	NodArbore* radacina = NULL;
+	FILE* f = fopen(numeFisier, "r");
+	if (f != NULL) {
+		while (!feof(f)) {
+			inserareInArbore(&radacina, citireLaptop(f));
+		}
+		fclose(f);
+	}
+	return radacina;
 }
 
 int main() {
 
 	return 0;
+
+
 }
