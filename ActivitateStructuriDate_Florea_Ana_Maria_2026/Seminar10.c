@@ -155,16 +155,65 @@ void dezalocareArboreDeMasini(NodArbore** radacina) {
 	}
 }
 
-//Preluati urmatoarele functii din laboratorul precedent.
-//Acestea ar trebuie sa functioneze pe noul arbore echilibrat.
+Masina getMasinaByID(NodArbore* radacina, int id) {
+	if (radacina == NULL) {
+		Masina m;
+		m.id = -1;       // ID fals ca sa stim in main ca nu a fost gasita
+		m.model = NULL;
+		m.numeSofer = NULL;
+		return m;
+	}
 
-Masina getMasinaByID(/*arborele de masini*/int id);
+	if (radacina->info.id == id) {
+		Masina copie = radacina->info;
 
-int determinaNumarNoduri(/*arborele de masini*/);
+		
+		copie.model = (char*)malloc(strlen(radacina->info.model) + 1);
+		strcpy(copie.model, radacina->info.model);
 
-float calculeazaPretTotal(/*arbore de masini*/);
+		copie.numeSofer = (char*)malloc(strlen(radacina->info.numeSofer) + 1);
+		strcpy(copie.numeSofer, radacina->info.numeSofer);
 
-float calculeazaPretulMasinilorUnuiSofer(/*arbore de masini*/ const char* numeSofer);
+		return copie;
+	}
+
+	if (id < radacina->info.id) {
+		return getMasinaByID(radacina->stanga, id); //cautam in stanga
+	}
+	else {
+		return getMasinaByID(radacina->dreapta, id); //cautam in dreapta
+	}
+}
+
+int determinaNumarNoduri(NodArbore* radacina) {
+	if (radacina != NULL) {
+		return 1 + determinaNumarNoduri(radacina->stanga) + determinaNumarNoduri(radacina->dreapta);
+	}
+	return 0;
+}
+
+float calculeazaPretTotal(NodArbore* radacina) {
+	if (radacina != NULL) {
+		return radacina->info.pret + calculeazaPretTotal(radacina->stanga) + calculeazaPretTotal(radacina->dreapta);
+	}
+	return 0.0f; 
+}
+
+float calculeazaPretulMasinilorUnuiSofer(NodArbore* radacina, const char* numeSofer) {
+		if (radacina) {
+			float suma = calculeazaPretulMasinilorUnuiSofer(radacina->stanga, numeSofer) + calculeazaPretulMasinilorUnuiSofer(radacina->dreapta, numeSofer);
+			if (strcmp(radacina->info.numeSofer, numeSofer) == 0) {
+				return suma + radacina->info.pret;
+			}
+			else {
+				return suma;
+			}
+		}
+		else {
+			return 0;
+		}
+		return 0;
+	}
 
 int main() {
 	NodArbore* radacina = citireArboreDeMasiniDinFisier("masini.txt");
@@ -173,14 +222,25 @@ int main() {
 	printf("\nINALTIME ARBORE\n");
 	printf("%d",calculeazaInaltimeArbore(radacina));
 
+	printf("\nPRET MASINI SOFER\n");
+	printf("%f", calculeazaPretulMasinilorUnuiSofer(radacina,"Gigel"));
+
+	printf("\nPRET TOTAL MASINI\n");
+	printf("%f", calculeazaPretTotal(radacina));
+
+	printf("\nNUMAR NODURI\n");
+	printf("%d", determinaNumarNoduri(radacina));
+
+	printf("\nCAUTARE DUPA ID\n");
+	int idCautat = 5;
+	Masina m = getMasinaByID(radacina, idCautat);
+	afisareMasina(m);
 
 	printf("\nDEZALOCARE\n");
 	dezalocareArboreDeMasini(&radacina);
 	if (radacina == NULL) {
 		printf("Arborele a fost sters din memorie\n");
 	}
-
-	return 0;
 
 	return 0;
 }
