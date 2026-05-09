@@ -17,12 +17,14 @@ struct StructuraMasina {
 	unsigned char serie;
 };
 typedef struct StructuraMasina Masina;
+
+typedef struct NodArbore NodArbore;
 struct NodArbore {
 	Masina info;
 	NodArbore* stanga;
 	NodArbore* dreapta;
 };
-typedef struct NodArbore NodArbore;
+
 Masina citireMasinaDinFisier(FILE* file) {
 	char buffer[100];
 	char sep[3] = ",\n";
@@ -66,14 +68,18 @@ int calculeazaInaltimeArbore(NodArbore* radacina) {
 	
 }
 
-NodArbore* rotireStanga(NodArbore** radacina) {
+int verificareEchilibru(NodArbore* radacina) {
+	return calculeazaInaltimeArbore(radacina->stanga) - calculeazaInaltimeArbore(radacina->dreapta);
+}
+
+void rotireStanga(NodArbore** radacina) {
 	NodArbore* aux = (*radacina)->dreapta;
 	(*radacina)->dreapta = aux->stanga;
 	aux->stanga = (*radacina);
 	(*radacina) = aux;
 }
 
-NodArbore* rotireDreapta(NodArbore** radacina) {
+void rotireDreapta(NodArbore** radacina) {
 	NodArbore* aux = (*radacina)->stanga;
 	(*radacina)->stanga = aux->dreapta;
 	aux->dreapta = (*radacina);
@@ -115,9 +121,7 @@ void adaugaMasinaInArboreEchilibrat(NodArbore** radacina, Masina masinaNoua) {
 		(*radacina) = nou;
 	}
 }
-int verificareEchilibru(NodArbore* radacina) {
-	return calculeazaInaltimeArbore(radacina->stanga) - calculeazaInaltimeArbore(radacina->dreapta);
-}
+
 void* citireArboreDeMasiniDinFisier(const char* numeFisier) {
 	FILE* file = fopen(numeFisier, "r");
 	NodArbore* radacina = NULL;
@@ -126,7 +130,7 @@ void* citireArboreDeMasiniDinFisier(const char* numeFisier) {
 			adaugaMasinaInArboreEchilibrat(&radacina, citireMasinaDinFisier(file));
 		}
 	}
-	fcloe(file);
+	fclose(file);
 	return radacina;
 }
 
@@ -138,8 +142,17 @@ void afisareMasiniDinArbore(NodArbore* radacina) {
 	}
 }
 
-void dezalocareArboreDeMasini(/*arbore de masini*/) {
-	//sunt dezalocate toate masinile si arborele de elemente
+void dezalocareArboreDeMasini(NodArbore** radacina) {
+	if (*radacina) {
+		dezalocareArboreDeMasini(&(*radacina)->stanga);
+		dezalocareArboreDeMasini(&(*radacina)->dreapta);
+
+		free((*radacina)->info.numeSofer);
+		free((*radacina)->info.model);
+
+		free(*radacina);
+		(*radacina) = NULL;
+	}
 }
 
 //Preluati urmatoarele functii din laboratorul precedent.
@@ -156,6 +169,14 @@ float calculeazaPretulMasinilorUnuiSofer(/*arbore de masini*/ const char* numeSo
 int main() {
 	NodArbore* radacina = citireArboreDeMasiniDinFisier("masini.txt");
 	afisareMasiniDinArbore(radacina);
+
+	printf("\nDEZALOCARE\n");
+	dezalocareArboreDeMasini(&radacina);
+	if (radacina == NULL) {
+		printf("Arborele a fost sters din memorie\n");
+	}
+
+	return 0;
 
 	return 0;
 }
