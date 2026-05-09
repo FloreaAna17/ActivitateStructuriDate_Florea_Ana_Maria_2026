@@ -97,7 +97,7 @@ void adaugaMasinaInArboreEchilibrat(NodArbore** radacina, Masina masinaNoua) {
 		int factorEchilibru = verificareEchilibru(*radacina);
 		if (factorEchilibru == -2) {
 			//dezechilibru dreapta
-			if (verificareEchilibru((*radacina)->dreapta == -1)) {
+			if (verificareEchilibru((*radacina)->dreapta) == -1) {
 				rotireStanga(&(*radacina));
 			}
 			else {
@@ -169,6 +169,9 @@ float calculeazaPretulMasinilorUnuiSofer(/*arbore de masini*/ const char* numeSo
 int main() {
 	NodArbore* radacina = citireArboreDeMasiniDinFisier("masini.txt");
 	afisareMasiniDinArbore(radacina);
+
+	printf("\nINALTIME ARBORE\n");
+	printf("%d",calculeazaInaltimeArbore(radacina));
 
 	printf("\nDEZALOCARE\n");
 	dezalocareArboreDeMasini(&radacina);
