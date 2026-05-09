@@ -173,6 +173,7 @@ int main() {
 	printf("\nINALTIME ARBORE\n");
 	printf("%d",calculeazaInaltimeArbore(radacina));
 
+
 	printf("\nDEZALOCARE\n");
 	dezalocareArboreDeMasini(&radacina);
 	if (radacina == NULL) {
